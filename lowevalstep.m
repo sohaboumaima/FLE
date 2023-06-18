@@ -317,8 +317,3 @@ function [x, f, alpha, success, func_eval] = lowevalstep(fun, x, f, alpha, pr, n
     else
         alpha = theta * alpha;
     end
-
-%        if (nLE > max(2,fval - 1))
-%            nLE = 0;
-%            evl = "FE";
-%        end
