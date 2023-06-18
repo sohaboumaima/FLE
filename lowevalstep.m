@@ -1,7 +1,40 @@
 function [x, f, alpha, success, func_eval] = lowevalstep(fun, x, f, alpha, pr, ni, li, ui, Ai, Z, W, dirgen, preslineq, presbounds, presleq, m, p0, nbunc, tol_feas)
+% Inputs:
+%   - fun: The objective function.
+%   - x: The current point.
+%   - f: The current function value at point x.
+%   - alpha: The current step size.
+%   - pr: Structure containing problem data.
+%   - ni: Number of inequality constraints.
+%   - li: Lower bounds for inequality constraints.
+%   - ui: Upper bounds for inequality constraints.
+%   - Ai: Matrix of inequality constraint coefficients.
+%   - Z: Matrix of equality constraint coefficients.
+%   - W: Basis for the null space of A (equality constraint matrix).
+%   - dirgen: Method that is used for generating the directions with
+%       0: Deterministic variant - always choose the generators of an 
+%       approximate tangent cone (but randomly ordered)
+%       1: Proceed with a random subset selected within the 
+%       generators of an approximate tangent cone
+%       2: Attempt to benefit from linear subspaces included in 
+%       an approximate tangent cone to reduce the size of the (random) 
+%       polling set, otherwise draw directions similarly to 1
+%   - preslineq: Flag indicating the presence of linear equality constraints.
+%   - presbounds: Flag indicating the presence of bounds.
+%   - presleq: Flag indicating the presence of inequality constraints.
+%   - m: Number of linear equality constraints.
+%   - p0: Probability of selecting feasible directions.
+%   - nbunc: Number of unconstrained directions.
+%   - tol_feas: Tolerance for feasibility checks.
 
-    % The case where there are no active bounds - situation similar to linear
-% 		equality-constrained (or unconstrained) case
+% Outputs:
+%   - x: Updated point after the step.
+%   - f: Updated function value at the new point.
+%   - alpha: The updated step size.
+%   - success: Flag indicating the success of the step.
+%   - func_eval: Number of function evaluations performed.
+
+   
     Aineq  = pr.Aineq;
     lbineq = pr.lbineq;
     ubineq = pr.ubineq;
@@ -287,27 +320,25 @@ function [x, f, alpha, success, func_eval] = lowevalstep(fun, x, f, alpha, pr, n
 
     while (~success) && (count_dir <= cardD)
 
-		d = D(:,count_dir);
-		xtemp = x + alpha * d;
+	d = D(:,count_dir);
+	xtemp = x + alpha * d;
         rho = min(1e-5, 1e-5*alpha^2);
-%
-%		Test for the feasibility of the point
-%
+%\
+%	Test for the feasibility of the point
+
         feas = isfeasible(xtemp,presbounds, preslineq, pr.lb, pr.ub, pr.Aeq, pr.beq, pr.Aineq, pr.lbineq, pr.ubineq, tol_feas);
-% %
-		if (~feas)
-			count_dir = count_dir +1;
+
+	if (~feas)
+		count_dir = count_dir +1;
+	else
+		ftemp = feval(fun,xtemp, 0); 
+		func_eval = func_eval + 1;
+		if (ftemp < f - rho*(norm(d)^2)) % Test for sufficient decrease at xtemp
+			success = 1;
 		else
-%			Test for sufficient decrease at xtemp
-			ftemp = feval(fun,xtemp, 0);
-			func_eval = func_eval + 1;
-			if (ftemp < f - rho*(norm(d)^2))
-				success = 1;
-			else
-				count_dir = count_dir +1;
-			end
-%
+			count_dir = count_dir +1;
 		end
+	end
     end
 
     if success
