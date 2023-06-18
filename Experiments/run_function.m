@@ -13,47 +13,6 @@ for i= 1:length(list_problems)
     prob          = list_problems(i);  
     p             = prob{:};
     disp(['problem ' int2str(i) ': ' char(p)])
-    if (p == "hs028")
-        p = 'hs28';
-    elseif (p=="hs049")
-        p = 'hs49';
-    elseif (p=="hs051")
-        p = 'hs51';
-    elseif (p=="hs053")
-        p = 'hs53';
-    elseif (p=="hs009")
-        p = 'hs9';
-    elseif (p=="hs048")
-        p = 'hs48';
-    elseif (p=="hs050")
-        p = 'hs50';
-    elseif (p=="hs052")
-        p = 'hs52';
-    elseif (p=="hs055")
-        p = 'hs55';
-    elseif (p=="hs041")
-        p = 'hs41';
-    elseif (p=="hs054")
-        p = 'hs54';
-    elseif (p=="hs062")
-        p = 'hs62';
-    elseif (p=="hs036")
-        p = 'hs36';
-    elseif (p=="hs044")
-        p = 'hs44';
-    elseif (p=="hs076")
-        p = 'hs76';
-    elseif (p=="hs086")
-        p = 'hs86';
-    elseif (p=="hs021")
-        p = 'hs21';
-    elseif (p=="hs024")
-        p = 'hs24';
-    elseif (p=="hs035")
-        p = 'hs35';
-    elseif (p=="hs037")
-        p = 'hs37';
-    end
     pr = macup(p);
 %     if pr.numlb || pr.numub
 %         pr = make_non_smooth_problem(pr, 'linearequ');
