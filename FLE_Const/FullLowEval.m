@@ -75,7 +75,7 @@ nule    = 0;
 
 % Determine the presence of bounds
 lowbnd = find(pr.lb > -1e20, 1);
-upbnd  = find(pr.ub < 1e20, 1);
+upbnd  = find(pr.ub < 1e20, 1);16
 presbounds = ~isempty(upbnd) || ~isempty(lowbnd);
 
 % Get the constraints from the structure pr
