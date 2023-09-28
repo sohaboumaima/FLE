@@ -1,4 +1,4 @@
-function [xsol, fsol, output] = FullEval(fun, x0, pr, maxevals)
+function [xsol, fsol, output] = FullEval(fun, x0, pr, maxevals, unconst)
 % Funtion implementing pure Full-Eval
 %
 % Input:
@@ -84,7 +84,7 @@ while m          % The problem is already at the solution or infeasible when m= 
     end
 
     % Perform a full eval step 
-    [xn, fn, g, H, beta, success, nf] = fullevalstep(fun, x, f, H, x_old, g_old, h, Z, num_success_iter, pr, -1);
+    [xn, fn, g, H, beta, success, nf] = fullevalstep(fun, x, f, H, x_old, g_old, h, Z, num_success_iter, pr, -1, unconst);
     if (numIter == 1)
         ng0 = norm(g);
     end
